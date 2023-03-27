@@ -26,7 +26,7 @@ public class SportHandler {
     }
 
     public Mono<ServerResponse> createSport(ServerRequest request) {
-        return Objects.isNull(dataService.getSportBy(request.pathVariable("sportName"))) ?
+        return Objects.isNull(dataService.getSportBy(request.pathVariable("sportName")).block()) ?
                 ServerResponse.status(HttpStatus.CREATED)
                         .body(dataService.create(request.pathVariable("sportName")), SportDto.class) :
                 ServerResponse.badRequest().body(Mono.just(new ErrorDto("resource already exist",
